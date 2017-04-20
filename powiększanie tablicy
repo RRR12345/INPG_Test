@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define CYCLES 10
+int * add(int * tab, int n, int new_elem); //Dek
+
+int main()
+{
+    int var_1, roz, i, j;
+    int *tabf; // Wskaznik, który stanie sie tablicą.
+    tabf=NULL; //Wyzerowanie wskaźnika
+    int elem;
+    //
+    for(roz=0;roz<sizeof(tabf)/sizeof(int);roz++);
+    for(i=0;i<CYCLES;i++)
+    {
+         printf("Podaj liczbe:\n");
+        scanf("%i", &elem);
+        tabf=add(tabf, i, elem);
+    }
+    printf("\n*******\n");
+    for(j=0;j<i;j++)
+    {
+        printf("%3i", tabf[j]);
+    }
+    return 0;
+}
+
+int * add(int * tab, int n, int new_elem)
+{
+    int i;
+    int* tab2;
+    tab2=(int*)malloc((sizeof(int))*(n+1));
+    if (tab2==NULL)
+        return NULL;
+    for(i=0;i<n;i++)
+    {
+        tab2[i]=tab[i];
+    }
+    tab2[i]=new_elem;
+    free(tab);
+
+    return tab2;
+}
+
