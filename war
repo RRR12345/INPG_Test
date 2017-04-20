@@ -3,7 +3,7 @@
 
 int main() //Frytki
 {
-    float tab[5], x=0, y=0;
+    float tab[5], x=0, fy=0;
     int i;
     printf("Wprowadź pięć liczb:");
     for (i=0;i<5;i++)
