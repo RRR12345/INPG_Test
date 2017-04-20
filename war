@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    float tab[5], x=0, y=0;
+    int i;
+    printf("Wprowadź pięć liczb:");
+    for (i=0;i<5;i++)
+        {
+            scanf("%f",&tab[i]);
+            x+=tab[i];
+        }
+    float sr, yi;
+    sr = x/5;           /*sr=średnia arytmetyczna*/
+    printf("Średnia wynosi: %f\n\n",sr);
+
+    for(i = 0;i<5;i++)
+    {
+            y+=(tab[i]*tab[i]-2*tab[i]*sr+sr*sr);
+            yi = y/5;       /*yi=wariancja*/
+    }
+    printf("Wariancja wynosi: %f\n",yi);
+
+
+    return 0;
+
+}   
