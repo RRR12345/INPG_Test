@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define ROZ 100 //Deklaracja pierwotnej długości łancucha
+char deleteFirstChar(char** pstr);
+void fixFgets(char* str);
+
+int main()
+{
+    printf("***ZADANIE 3 TEMAT 8 - USUWANIE PIERWSZEGO ZNAKU***\n Wprowadz napis o dlugosci nieprzekraczajacej 99:\n");
+    char *tab=(char*)malloc(sizeof(char)*ROZ); //Alokacja pamięci dla tablicy
+    if (tab==NULL) return NULL; //SIZEOF NIE DZIALA NA MALLOC
+    char znk;
+    fgets(tab,ROZ,stdin); //Wprowadzanie napisu o maksymalnej długości
+    fixFgets(tab);
+    printf("\nNapis przed skroceniem, oraz adres wskaźnika:\n");
+    puts(tab);
+    printf("\nAdres: %i\n");
+    //printf("Rozmiar tablicy to: %i\n", sizeof());
+    znk=deleteFirstChar(&tab);
+    if(znk==NULL) return -1;
+    printf("\nUsuniety znak to:'%c'\nSkrocony napis:  \n\n", znk);
+    printf("%s\n", tab);
+    free(tab);
+    return 0;
+}
+
+char deleteFirstChar(char** pstr)
+{
+    char znk;
+    int i;
+    int cnt_1; //Licznik znaków w przekazanej tablicy
+    for(cnt_1=0;(*pstr)[cnt_1]!=NULL;cnt_1++); //Przeliczanie ilości znaków w tablicy
+    char *tab2=(char*)malloc((cnt_1-1)*sizeof(char)); //Deklaracja pamięci o dopasowanym rozmiarze
+    if (tab2==NULL) return NULL; //Sprawdzenie poprawności alokacji
+    //printf("[Debug] Przypisanie znaku\n");
+    znk=(*pstr)[0];//*pstr;//pstr[0];
+    //printf("[Debug] Kopiowanie tablicy\n");
+    for(i=1;i<cnt_1+1;i++)//(*pstr)[i]!='\0';i++);
+    {
+        tab2[i-1]=(*pstr)[i];
+        //printf("[Debug]  tab2[%i]=%3i *pstr[%i]=%3i\n", i-1, tab2[i-1], i, (*pstr)[i]);
+    }
+    //printf("[Debug] OSTATNI ZNAK: %i\n", tab2[i]);
+    //printf("[Debug] Zwalnianie pamieci starej\n");
+    free(*pstr);
+    //printf("[Debug] Zwracanie wartosci\n");
+    *pstr=tab2; //Przekierowanie wskaźnika na nową tablicę
+    return znk;
+}
+
+void fixFgets(char* str) //Funkcja zamieniająca '\n' na '\0'
+{
+    int cnt_2;
+    for(cnt_2=0;str[cnt_2]!='\0';cnt_2++)
+    {
+        if(str[cnt_2]=='\n')
+        {
+            str[cnt_2]='\0';
+        }
+    }
+    return NULL;
+}
+
