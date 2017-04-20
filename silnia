@@ -1,0 +1,12 @@
+int main()
+{
+        int Nr,Nr2,
+
+        sil=1;
+        printf("\n Liczba:");
+        scanf("%i",&Nr2);
+        for(Nr=1;Nr<=Nr2;Nr++)
+        sil=sil*Nr;
+        printf("\n Silnia z %i jest rowna %i",Nr2,sil);
+        return 0;
+}
