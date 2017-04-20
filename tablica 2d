@@ -1,0 +1,218 @@
+#include    <stdio.h>
+#include    <stdlib.h>
+#define     ABS(X)  (X>0)?(X):(-X) //DEKLARACJA WARTOŒCI BEZWZGLEDNEJ ***name_(exp4) (exp1)?(exp2):(exp3)*** Gdy exp1=TRUE -> exp4=exp2 Gdy exp1=FALSE -> exp4=exp3
+
+/* DEKLRACJE FUNKCJ*/
+
+//Tworzy macierz nxn. Alokuje kazdy wiersz osobno. Usuwa poprzednie wiersze. Zwraca adres na wskaznik.
+//W przypadku bledu zwraca NULL.
+int** createMatrix(int n); // k m8
+
+//Wypelnia macierz o rozmairze nxn kolejnymi liczbami naturalnymi zaczynajac od 1
+void fillMatrix(int** tab, int n);
+
+//Tworzy tablicê 'dest ', kopiuje do niej zawartoœæ tablicy ''src'' i "wrzuca" "dest" pod przekazany adres.
+//Wykorzystuje createMatrix();
+void copyMatrix(int*** pdest, int** src, int n);
+
+//Otrzymuje macierz o wymiarze nxn i zwalnia ja z pamieci. Ustawia wskaznik na NULL.
+void deleteMatrix(int*** ptab, int n); //DO WYKORZYSTANIA W CREATE MATRIX
+
+//Wyswietla na ekranie macierz o rozmiarze nxn
+void printfMatrix(int** ptab, int n);
+
+//Tworzy macierz jako caly blok pamieci
+void createNewMatrix(int*** ptab, int n);
+
+//Kasuje macierz jako caly blok pamieci
+void deleteNewMatrix(int*** ptab); //UZYWAĆ PO UŻYCIU DELETE MATRIX
+
+/* MAIN */
+int main()
+{
+
+    int     **macierzA=NULL; //Wskaznik na dynamiczna tablice
+    int     rozmiar;    //Zmienna do pobierana danych z klawiatury
+
+
+    //Wczytywanie danych
+    printf("[Macierze]\n");
+    printf("Podaj rozmiar macierzy nxn: ");
+    scanf("%i",  &rozmiar);
+    if(rozmiar < 0)
+    {
+        rozmiar=ABS(rozmiar);
+        printf("Uzyto wartosci bezwzglednej: %i\n", rozmiar);
+    }
+
+    if(rozmiar == 0)
+    {
+        printf("Rozmiar musi byc wiekszy od zera!\n");
+        return 0;
+    }
+
+    //Przetwarzanie
+    printf("Tworze macierz nxn...\n");
+    createNewMatrix(&macierzA, rozmiar);
+    if(macierzA==NULL){printf("MEM ERROR: macierzA\n"); return -1;}
+
+    printf("Wypelnienie macierzy liczbami naturalnymi...\n");
+    fillMatrix(macierzA, rozmiar);
+
+    printf("Macierz A:\n");
+    printfMatrix(macierzA, rozmiar);
+
+    printf("\n%i\n\n",macierzA[3][2]);
+
+    printf("Zwalnianie pamieci...\n");
+    deleteNewMatrix(&macierzA);
+
+    //Wyjscie
+    printf("\n\n* KONIEC *\n\n");
+    return 0;
+}
+
+/* DEFINICJE FUNKCJI */
+
+int** createMatrix(int n)
+{
+
+    int **wsk_tmp;      //Wskaznik na dynamiczna tablice
+    int cnt_row;        //Licznik dla petli
+    int cnt_col;        //Licznik dla petli
+
+    wsk_tmp=(int**)malloc(n*sizeof(int*)); //Po alokacji wsk_tmp wskazuje na pierwszą pozycję pamięci
+    if(wsk_tmp==NULL) return NULL; //Warunek konieczny do uwzględnienia w wypadku wykrycia błędu.
+
+    for(cnt_row=0; cnt_row<n; cnt_row++) //Tworzenie wierszy rozmiaru n za pomocą malloc w kolejnych pozycjach pamięi zadeklarowanej wcześniej.
+    {
+        wsk_tmp[cnt_row]=(int*)malloc(n*sizeof(int)); //Po alokacji w tym przypadku, adres wsk_tmp nie ulega zmianie
+        if(wsk_tmp==NULL) //Warunek konieczny do uwzględnienia w wypadku wykrycia błędu.
+        {
+            deleteMatrix(&wsk_tmp, cnt_row); //Czy przy pierwszej deklaracji ten warunek powinien być uwzględniony?
+            return NULL;
+        }
+
+
+    }
+
+    return wsk_tmp; //Funkcja zwraca tablicę tablic, której elementy są określione za pomocą wsk_tmp[indeks wiersza][indeks kolumny]
+}
+/*|||||||||||||||||||||||||||||||||||||||||| */
+
+void fillMatrix(int** tab, int n)
+{
+
+    int cnt_row;        //Licznik dla petli
+    int cnt_col;        //Licznik dla petli
+    int cnt_n=1;        //Licznik liczb naturalnych
+
+    for(cnt_row=0; cnt_row<n; cnt_row++) //pętla dla wierzy
+    {
+        for(cnt_col=0; cnt_col<n; cnt_col++) //pętla dla kolumn
+        {
+            tab[cnt_row][cnt_col]=cnt_n++; //za każdym wykonaniem pętli dla kolumn, licznik liczb naturalnych ulega inkrementacji
+        }
+    }
+
+    return; //funkcja nie musi zwracać tablicy, ponieważ jedynie uzupełniła jej zawartość wartościami
+}
+/*|||||||||||||||||||||||||||*/
+
+void copyMatrix(int*** pdest, int** src, int n) /*Funkcja otrzymuje adres na tablicę dwuwymiarową, do której ma być skopiowana zawartość pierwotnej tablicy,
+                                                    tablicę 2 wymiarową, oraz jej rozmiar zadeklarowany na samym początku.*/
+{
+
+    int **wsk_tmp;     //Wskaźnik umożliwiający utworzenie tablicy dwuwymiarowej
+    int cnt_row;        //Licznik dla petli
+    int cnt_col;        //Licznik dla petli
+
+    wsk_tmp = createMatrix(n); //Utworzenie nowej tablicy za pomocą funkcji napisanej wcześniej
+    if(wsk_tmp==NULL){*pdest = NULL; return;}
+
+    for(cnt_row=0; cnt_row<n; cnt_row++) //Procedura kopiowania zawartości tablidy dwuwymiarowej src do tablicy utworzonej wsk_tmp
+    {
+        for(cnt_col=0; cnt_col<n; cnt_col++)
+        {
+            wsk_tmp[cnt_row][cnt_col]=src[cnt_row][cnt_col];
+        }
+    }
+
+
+    *pdest = wsk_tmp; //Ponieważ pdest jest adresem do tabliby dwuwymiarowej, należy "wyłuskać" tablicę dwuwymiarową.
+    return;
+}
+/* ||||||||||||||||||||||||||||||||||||||||*/ //Dlaczego 2 funkcje "deleteMatrix" oraz "deleteNewMatrix"
+
+void deleteMatrix(int*** ptab, int n) //Funkcja otrzymuje adres na tablicę dwuwymiarową, którą należy "usunąć" oraz jej rozmiar
+{
+
+    int cnt_row;      //Licznik dla petli (wiersze)
+    //int cnt_col;      //Licznik dla petli (kolumny)
+
+    for(cnt_row=0; cnt_row<n; cnt_row++)
+    {
+        free((*ptab)[cnt_row]);
+    }
+    free(*ptab);
+    (*ptab) = NULL;
+
+    return;
+}
+/*||||||||||||||||||||||||||||||||||||||||*/
+
+void printfMatrix(int** ptab, int n) //Funkcja otrzymuje tablicę do wyświetlenia i jej rozmiar
+{
+
+    int cnt_row;      //Licznik dla petli
+    int cnt_col;      //Licznik dla petli
+
+    for(cnt_row=0; cnt_row<n; cnt_row++)
+    {
+        printf("| "); //Na początku wiersza jest wstawiany ten znak
+        for(cnt_col=0; cnt_col<n; cnt_col++)
+        {
+            printf("%4i ", ptab[cnt_row][cnt_col]); //%4i oznacza, że na liczbę "zarezerwowane" jest 4 znaki
+        }
+        printf(" |\n"); //Po wypiełnieniu pierwszego wiersza dopiswana jeste kreska, oraz kursor jest naprowadzany na nastepny wiersz '\n'
+    }
+
+    printf("\n* * * * *\n"); //estetics
+    return;
+}
+
+/*||||||||||||||||||||||||||||||||||||*/
+
+//Tworzy macierz jako caly blok pamieci
+void createNewMatrix(int*** ptab, int n)
+{
+
+    int cnt_i;        //Licznik dla petli
+
+    //n+1 dlatego ze potrzebujemy n wskaznikow na kolejne n wierszy/kolumny
+    *ptab=(int**)malloc((n+1)*n*sizeof(int*)); //czyli w pamięci jest n*n elementów + n miejsca na adresy tablic
+    if(*ptab==NULL) return;
+
+    for(cnt_i=0; cnt_i<n; cnt_i++)
+    {
+        (ptab)[cnt_i]=(ptab+(cnt_i+1)*n);
+    }
+
+    return;
+} //(*ptab)[x][y] <=> *(*((*ptab) + x)+y)
+/*|||||||||||||||||||||||||||||||||||||*/
+
+//Kasuje macierz jako caly blok pamieci
+void deleteNewMatrix(int*** ptab)
+{
+
+    if(*ptab != NULL)
+    {
+        free(*ptab);
+        *ptab = NULL;
+    }
+
+    return;
+
+}
+
