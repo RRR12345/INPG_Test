@@ -1,0 +1,197 @@
+/*
+Zaimplementować strukturę opisującą liczbę zespoloną,
+a następnie funkcje realizujące podstawowe operacje na liczbach zespolonych
+(obowiązkowo dodawanie, moduł, liczba sprzężona, nadobowiązkowo odejmowanie, mnożenie dzielenie).
+Funkcje, których wynikiem działania jest struktura powinny ją zwrócić poprzez return.
+
+W wypisywaniu liczby zespolonej można się posłużyć przykładową funkcją:
+void wypisz_zesp(struct complex z) {
+printf("%.2f %+.2fi \n", z.re, z.im);
+}
+gdzie z jest zmienną strukturalną o polach re i im
+(to jest przykładowa struktura - państwo użyją tu własnych struktur).
+*/
+
+
+#include     <stdio.h>
+#include    <stdlib.h>
+#include    <math.h>
+#define     SQUARE(X) (X)*(X)
+#define     LiczbaPI 3.14159265
+/*  ********************************** */
+//Definicja struktury ZAWSZE ponad deklaracjami funkcji.
+struct Complex
+{
+    double Re; //Deklaracje elementów struktury, które mogą być roznych typów
+    double Im;
+};
+/*  ********************************** */
+
+double PowerTo(int a, int x); //Punkcja podnosząca liczbe a do wskazanej potęgi x
+void wypisz_zesp(struct Complex z); //Funkcja wyświetlająca
+struct Complex ComplexAdd(struct Complex z1, struct Complex z2); //Funkcja dodająca
+struct Complex ComplexSub(struct Complex z1, struct Complex z2); //Funkcja odejmująca
+struct Complex ComplexMul(struct Complex z1, struct Complex z2); //Funkcja mnożąca
+struct Complex ComplexDiv(struct Complex z1, struct Complex z2); //Funkcja dzieląca
+struct Complex ComplexMod(struct Complex z1, struct Complex z2); //Funkcja licząca moduł
+struct Complex ComplexCjg(struct Complex z); //Funkcja wyznaczająca sprzężenie
+//void ComplexArg(struct Complex z); //Funkcja wyznaczająca argument
+double ComplexArgAprox(struct Complex z); //Funkcja zwracająca przybliżoną wartość argumentu liczby zespolonej
+
+
+/*  ********************************** */
+int main()
+{
+    struct Complex Z1; //Definicje zmiennych typu struktury Complex, ktora zawiera elementy typu double: Re oraz Im.
+    struct Complex Z2;
+    printf("Podaj czesc rzeczywista pierwszej liczby\n");
+    scanf("%lf", &Z1.Re); //Wpisuję liczby do zmiennej strukturalnej pod zadanym typem opisanym w strukturze
+    printf("Podaj czesc urojona pierwszej liczby\n");
+    scanf("%lf", &Z1.Im);
+    printf("Podaj czesc rzeczywista drugiej liczby\n");
+    scanf("%lf", &Z2.Re);
+    printf("Podaj czesc urojona drugiej liczby\n");
+    scanf("%lf", &Z2.Im);
+    printf("\nZ1= ");
+    wypisz_zesp(Z1);
+    printf("\nZ2= ");
+    wypisz_zesp(Z2);
+    printf("\nZ1+Z2= ");
+    wypisz_zesp(ComplexAdd(Z1, Z2));
+    printf("\nZ1-Z2= ");
+    wypisz_zesp(ComplexSub(Z1, Z2));
+    printf("\nZ1*Z2= ");
+    wypisz_zesp(ComplexMul(Z1, Z2));
+    printf("\nZ1/Z2= ");
+    wypisz_zesp(ComplexDiv(Z1, Z2));
+    printf("\n|Z1|= %.2lf\n", ComplexMod(Z1,Z2).Re);
+    printf("\n|Z2|= %.2lf\n", ComplexMod(Z1,Z2).Im);
+    printf("\n~Z1= ");
+    wypisz_zesp(ComplexCjg(Z1));
+    printf("\n~Z2= ");
+    wypisz_zesp(ComplexCjg(Z2));
+    printf("\nArg(Z1)(wysoka dokladnosc tylko dla katow <-0.7;0.7> rad)= ");
+    printf("%lf\n", ComplexArgAprox(Z1));
+    printf("\nArg(Z2)(wysoka dokladnosc tylko dla katow <-0.7;0.7> rad)= ");
+    printf("%lf\n", ComplexArgAprox(Z2));
+    return 0;
+}
+
+/*  ********************************** */
+
+void wypisz_zesp(struct Complex z) //Argumentem jest "z", ktore jest typu struktury Complex
+{
+    printf("%.2f + %.2fi \n", z.Re, z.Im); //z.Re oraz z.Im jest uzależnione od argumentu, czyli od typu zmiennej skojarzonej ze strukturą.
+}
+/*  ********************************** */
+struct Complex ComplexAdd(struct Complex z1, struct Complex z2)
+{
+    struct Complex tmp_add; //Deklaruję nową zmienną "tmp_add", która jest typu struct Complex
+
+    tmp_add.Re = (z1.Re+z2.Re); //Argumentami funkcji są "zmienne" z1 oraz z2, które reprezentują struktury wprowadzane do funkcji.
+    tmp_add.Im = (z1.Im+z2.Im);
+    return tmp_add;
+};
+/*  ********************************** */
+struct Complex ComplexSub(struct Complex z1, struct Complex z2)
+{
+    struct Complex tmp_sub;
+
+    tmp_sub.Re = (z1.Re-z2.Re);
+    tmp_sub.Im = (z1.Im-z2.Im);
+    return tmp_sub;
+};
+/*  ********************************** */
+struct Complex ComplexMul(struct Complex z1, struct Complex z2)
+{
+    struct Complex tmp_mul; //z1.Re==x1, z1.Im==y1, z2.Re==x2, z2.Im==y2
+
+    tmp_mul.Re = ((z1.Re)*(z2.Re)-(z1.Im)*(z2.Im));
+    tmp_mul.Im = ((z1.Re)*(z2.Im)+(z2.Re)*(z1.Im));
+    return tmp_mul;
+};
+/*  ********************************** */
+struct Complex ComplexDiv(struct Complex z1, struct Complex z2)
+{
+    struct Complex tmp_div={0,0}; //W wypadku próby dzielenia przez 0, funkcja zwróci strukturę o zmiennych 0 , 0
+    if(z2.Re==0 && z2.Im==0) //Warunki logiczne porównujemy wprost
+    return tmp_div;
+    tmp_div.Re = ((((z1.Re)*(z2.Re)+(z1.Im)*(z2.Im)))/((SQUARE(z2.Re)+SQUARE(z2.Im))));
+    tmp_div.Im = ((((z2.Re)*(z1.Im)-(z1.Re)*(z2.Im)))/((SQUARE(z2.Re)+SQUARE(z2.Im))));
+    return tmp_div;
+};
+/*  ********************************** */
+struct Complex ComplexMod(struct Complex z1, struct Complex z2)
+{
+    struct Complex tmp_mod;
+    tmp_mod.Re=sqrt(SQUARE(z1.Re)+SQUARE(z1.Im)); //tmp_mod.Re - moduł liczby z1
+    tmp_mod.Im=sqrt(SQUARE(z2.Re)+SQUARE(z2.Im)); //tmp_mod.Re - moduł liczby z2
+    return tmp_mod;
+};
+/*  ********************************** */
+struct Complex ComplexCjg(struct Complex z)
+{
+    struct Complex tmp_sub;
+    tmp_sub.Re = z.Re;
+    tmp_sub.Im = -z.Im;
+    return tmp_sub;
+};
+/*  ********************************** */
+/*void ComplexArg(struct Complex z)
+{
+    char* wsk;
+    double x=z.Re;
+    double y=z.Im;
+    if(x=0 && y<0)
+    return *wsk="abc"
+}
+/*  ********************************** */
+double ComplexArgAprox(struct Complex z)
+{
+    double x=z.Re;
+    double y=z.Im;
+    if(x>0 && y==0)
+        return 0;
+    if(x==0 && y>0)
+    {
+        return (LiczbaPI/2);
+    }
+    if(x<0 && y==0)
+    {
+        return (LiczbaPI);
+    }
+    if(x==0 && y<0)
+    {
+        return (-LiczbaPI/2);
+    };
+    if(x>0)
+    return ((y/x)-PowerTo((y/x), 3)/3+PowerTo((y/x), 5)/5-PowerTo((y/x), 7)/7+PowerTo((y/x), 9)/9-PowerTo((y/x), 11)/11);
+    if(x<0)
+    return ((y/x)-PowerTo((y/x), 3)/3+PowerTo((y/x), 5)/5-PowerTo((y/x), 7)/7+PowerTo((y/x), 9)/9-PowerTo((y/x), 11)/11)+LiczbaPI;
+}
+/*  ********************************** */
+double PowerTo(int a, int x)
+{
+    if(x==0)
+        return 1;
+    if(x>0)
+    {
+    double X=1;
+    int i;
+    for(i=0;i<x;i++)
+    {
+        X*=a;
+    }
+    return X;
+    }
+    else if(x<0)
+    {
+    double X=1;
+    int i;
+    for(i=0;i>x;i--)
+    {
+        X*=a;
+    }
+    return (1/X);
+    }
+}
