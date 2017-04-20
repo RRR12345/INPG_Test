@@ -1,0 +1,23 @@
+#include <stdio.h>
+#define R 128
+int main()
+{
+    char tab[R];
+    int i = 0,j=-1;
+    fgets(tab,R,stdin);
+
+    for(tab[0];tab[i]!='\0';i++)
+    {
+        if(tab[i]!= 'a')
+        {
+            tab[j+1] = tab[i];
+            j++;
+        }
+        else tab[i]=tab[j];
+    }
+    tab[j] = '\0';
+
+    puts(tab);
+    return 0;
+}
+
