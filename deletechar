@@ -3,7 +3,7 @@
 #define ROZ 100 //Deklaracja pierwotnej długości łancucha
 char deleteFirstChar(char** pstr);
 void fixFgets(char* str);
-
+//Gotta go fast
 int main()
 {
     printf("***ZADANIE 3 TEMAT 8 - USUWANIE PIERWSZEGO ZNAKU***\n Wprowadz napis o dlugosci nieprzekraczajacej 99:\n");

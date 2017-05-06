@@ -10,3 +10,4 @@ int main()
         printf("\n Silnia z %i jest rowna %i",Nr2,sil);
         return 0;
 }
+//Gotta go fast

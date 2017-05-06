@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #define CYCLES 10
 int * add(int * tab, int n, int new_elem); //Dek
-
+//Gotta go fast
 int main()
 {
     int var_1, roz, i, j;

@@ -8,7 +8,7 @@ while(i<=10)
   suma+=i*i;
   i++;
 }
-
+//Gotta go fast
 printf("%i\n",suma);
 return 0;
 }

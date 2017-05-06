@@ -6,7 +6,7 @@ printf("Podaj promień koła: \n");
 scanf("%f",&r);
 float p=3.14159265*r*r;
 printf("Pole koła wynosi: %f", p);
-
+//Gotta go fast
 return 0;
 
 }

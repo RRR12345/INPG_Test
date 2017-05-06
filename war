@@ -7,7 +7,7 @@ int main() //Frytki
     int i;
     printf("Wprowadź pięć liczb:");
     for (i=0;i<5;i++)
-        {
+        {//Gotta go fast
             scanf("%f",&tab[i]);
             x+=tab[i];
         }

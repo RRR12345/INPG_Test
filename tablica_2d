@@ -7,7 +7,7 @@
 //Tworzy macierz nxn. Alokuje kazdy wiersz osobno. Usuwa poprzednie wiersze. Zwraca adres na wskaznik.
 //W przypadku bledu zwraca NULL.
 int** createMatrix(int n); // k m8
-
+//Gotta go fast
 //Wypelnia macierz o rozmairze nxn kolejnymi liczbami naturalnymi zaczynajac od 1
 void fillMatrix(int** tab, int n);
 

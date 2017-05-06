@@ -2,6 +2,7 @@
 #define R 128
 int main()
 {
+//Gotta go fast
     char tab[R];
     int i = 0,j=-1;
     fgets(tab,R,stdin);

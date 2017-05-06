@@ -11,7 +11,7 @@ printf("%.2f %+.2fi \n", z.re, z.im);
 gdzie z jest zmienną strukturalną o polach re i im
 (to jest przykładowa struktura - państwo użyją tu własnych struktur).
 */
-
+//Gotta go fast
 
 #include     <stdio.h>
 #include    <stdlib.h>
