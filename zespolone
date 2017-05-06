@@ -3,7 +3,7 @@ Zaimplementować strukturę opisującą liczbę zespoloną,
 a następnie funkcje realizujące podstawowe operacje na liczbach zespolonych
 (obowiązkowo dodawanie, moduł, liczba sprzężona, nadobowiązkowo odejmowanie, mnożenie dzielenie).
 Funkcje, których wynikiem działania jest struktura powinny ją zwrócić poprzez return.
-
+//WE are number one
 W wypisywaniu liczby zespolonej można się posłużyć przykładową funkcją:
 void wypisz_zesp(struct complex z) {
 printf("%.2f %+.2fi \n", z.re, z.im);

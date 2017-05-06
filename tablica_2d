@@ -1,3 +1,5 @@
+
+//Proba ognia
 #include    <stdio.h>
 #include    <stdlib.h>
 #define     ABS(X)  (X>0)?(X):(-X) //DEKLARACJA WARTOŒCI BEZWZGLEDNEJ ***name_(exp4) (exp1)?(exp2):(exp3)*** Gdy exp1=TRUE -> exp4=exp2 Gdy exp1=FALSE -> exp4=exp3

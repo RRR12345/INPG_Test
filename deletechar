@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+//RRR12345
 #define ROZ 100 //Deklaracja pierwotnej długości łancucha
 char deleteFirstChar(char** pstr);
 void fixFgets(char* str);

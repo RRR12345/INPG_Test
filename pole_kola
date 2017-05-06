@@ -1,5 +1,6 @@
 #include <stdio.h>
 int main()
+//Frytki
 {
 float r;
 printf("Podaj promień koła: \n");
